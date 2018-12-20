@@ -7,11 +7,11 @@ class SA:
   factory_cost, factory_cap, demand, cost_of_allocate):
     self.FACTORY_NUM = FACTORY_NUM
     self.CUSTOM_NUM = CUSTOM_NUM
-    self.factory_cost = factory_cost
-    self.factory_cap = factory_cap
+    self.factory_cost = copy.deepcopy(factory_cost)
+    self.factory_cap = copy.deepcopy(factory_cap)
     self.origin_cap = copy.deepcopy(factory_cap)
-    self.demand = demand
-    self.cost_of_allocate = cost_of_allocate
+    self.demand = copy.deepcopy(demand)
+    self.cost_of_allocate = copy.deepcopy(cost_of_allocate)
     self.solution = []
     self.cost = 0.0
   
@@ -31,7 +31,7 @@ class SA:
   def SA(self):
     self.initial_solution()
     T = 1000
-    while T > 0.00000001:
+    while T > 0.1:
       print(T)
       for i in range(1500):
         new_solution, new_cost = self.get_new_solution()

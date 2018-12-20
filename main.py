@@ -40,10 +40,23 @@ def read_file():
 if __name__ == "__main__":
   FACTORY_NUM, CUSTOM_NUM, \
   factory_cost, factory_cap, demand, cost_of_allocate = read_file()
-  # cost, solution = greedy(FACTORY_NUM, CUSTOM_NUM, \
-  # factory_cost, factory_cap, demand, cost_of_allocate)
   sa = SA(FACTORY_NUM, CUSTOM_NUM, \
   factory_cost, factory_cap, demand, cost_of_allocate)
-  cost, solution = sa.SA()
-  print(cost)
+  solution, cost = sa.SA()
+  # check
+  new_cost = 0
+  # path of each customer
+  for i in range(CUSTOM_NUM):
+    new_cost += cost_of_allocate[i][solution[i]]
+  # build factory
+  for i in range(FACTORY_NUM):
+    if i in solution:
+      new_cost += factory_cost[i]
+  # check capacity valid
+  for i in range(CUSTOM_NUM):
+    factory_cap[solution[i]] -= demand[i]
+    if factory_cap[solution[i]] < 0:
+      print('error')
+
   print(solution)
+  print(cost, new_cost)
