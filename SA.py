@@ -1,6 +1,7 @@
 import random
 import copy
 from scipy import exp
+from config import initial_T, end_T
 
 class SA:
   def __init__(self, FACTORY_NUM, CUSTOM_NUM, \
@@ -30,9 +31,9 @@ class SA:
     
   def SA(self):
     self.initial_solution()
-    T = 1000
-    while T > 0.1:
-      print(T)
+    T = initial_T
+    while T > end_T:
+      # print(T, self.cost)
       for i in range(1500):
         new_solution, new_cost = self.get_new_solution()
         if new_cost < self.cost:
@@ -65,8 +66,6 @@ class SA:
       self.factory_cap[solution[c1]] + self.demand[c1] < self.demand[c2]:
         c1 = int(random.random() * self.CUSTOM_NUM)
         c2 = int(random.random() * self.CUSTOM_NUM)
-      # self.factory_cap[solution[c2]] += self.demand[c2] - self.demand[c1]
-      # self.factory_cap[solution[c1]] += self.demand[c1] - self.demand[c2]
       solution[c1], solution[c2] = solution[c2], solution[c1]
     else:
       c1 = int(random.random() * self.CUSTOM_NUM)
@@ -80,7 +79,6 @@ class SA:
         return solution, self.cost
       while self.factory_cap[fidx] - self.demand[c1] < 0:
         fidx = int(random.random() * self.FACTORY_NUM)
-      # self.factory_cap[fidx] -= self.demand[c1]
       solution[c1] = fidx
     new_cost = 0
     for i in range(self.FACTORY_NUM):
