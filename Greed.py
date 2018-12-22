@@ -6,6 +6,7 @@ factory_cost, factory_cap, demand, cost_of_allocate):
   factory_cap_ = copy.deepcopy(factory_cap)
   cost = sum(factory_cost)
   solution = []
+  opened = []
   for idx in range(CUSTOM_NUM):
     d = demand[idx]
     temp = cost_of_allocate[idx]
@@ -22,4 +23,8 @@ factory_cost, factory_cap, demand, cost_of_allocate):
   for i in range(FACTORY_NUM):
     if factory_cap_[i] == origin_factory_cap[i]:
       cost -= factory_cost[i]
-  return cost, solution
+    if i in solution:
+      opened.append(1)
+    else:
+      opened.append(0)
+  return cost, solution, opened

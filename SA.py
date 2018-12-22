@@ -48,7 +48,13 @@ class SA:
             self.cost = new_cost
             self.update_cap()
       T *= 0.98
-    return self.solution, self.cost
+    opened = []
+    for i in range(self.FACTORY_NUM):
+      if i in self.solution:
+        opened.append(1)
+      else:
+        opened.append(0)
+    return self.solution, self.cost, opened
   
   def update_cap(self):
     self.factory_cap = copy.deepcopy(self.origin_cap)

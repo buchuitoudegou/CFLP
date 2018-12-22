@@ -10,6 +10,7 @@ def read_file(filename):
   cost_of_allocate = []
   f = open('./Instances/' + filename)
   raw_string = f.read()
+  f.close()
   line_string = raw_string.split('\n')
   split_line_space = list(map(lambda x: x.split(' '), line_string))
   filter_string = list(map(lambda x:list(filter(lambda a: a!='', x)), split_line_space))
@@ -41,9 +42,9 @@ def read_file(filename):
       idx += 1
   return FACTORY_NUM, CUSTOM_NUM, factory_cost, factory_cap, demand, cost_of_allocate
 
-def write_file(path, solution, cost):
+def write_file(path, solution, cost, opened):
   f = open(path, 'w')
-  f.write(str(cost) + '\n' + str(solution))
+  f.write(str(cost) + '\n' + str(opened) + '\n' + str(solution))
   f.close()
 
 def check_validity(solution, cost, FACTORY_NUM, CUSTOM_NUM, \
@@ -70,17 +71,22 @@ def check_validity(solution, cost, FACTORY_NUM, CUSTOM_NUM, \
   return error
 
 if __name__ == "__main__":
-  for i in range(68, 72):
-    filename = 'p' + str(i)
-    FACTORY_NUM, CUSTOM_NUM, \
-    factory_cost, factory_cap, demand, cost_of_allocate = read_file(filename)
-    cost, solution = greedy(FACTORY_NUM, CUSTOM_NUM, \
-    factory_cost, factory_cap, demand, cost_of_allocate)
-    # sa = SA(FACTORY_NUM, CUSTOM_NUM, \
-    # factory_cost, factory_cap, demand, cost_of_allocate)
-    # solution, cost = sa.SA()
-    error = check_validity(solution, cost, FACTORY_NUM, CUSTOM_NUM, \
-    factory_cost, factory_cap, demand, cost_of_allocate)
-    if not error:
-      write_file('result/greed/' + filename + '_result.txt', solution, cost)
+  for i in range(1, 72):
+    try:
+      filename = 'p' + str(i)
+      FACTORY_NUM, CUSTOM_NUM, \
+      factory_cost, factory_cap, demand, cost_of_allocate = read_file(filename)
+      # cost, solution, opened = greedy(FACTORY_NUM, CUSTOM_NUM, \
+      # factory_cost, factory_cap, demand, cost_of_allocate)
+      sa = SA(FACTORY_NUM, CUSTOM_NUM, \
+      factory_cost, factory_cap, demand, cost_of_allocate)
+      solution, cost, opened = sa.SA()
+      error = check_validity(solution, cost, FACTORY_NUM, CUSTOM_NUM, \
+      factory_cost, factory_cap, demand, cost_of_allocate)
+      # print(error)
+      if not error:
+        print('success %d' % i)
+        write_file('result/SA/' + filename + '_result.txt', solution, cost, opened)
+    except:
+      print('error %d' % i)
     
